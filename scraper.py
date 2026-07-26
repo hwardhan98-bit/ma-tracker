@@ -47,6 +47,7 @@ def extract_deal_info(title):
 
 def fetch_news():
     deals = []
+    seen_urls = set()
     for industry in INDUSTRIES:
         # Safely format and encode the URL to fix space/character errors
         raw_query = f'"{industry}" AND (merger OR acquisition OR "joint venture") when:1d'
@@ -56,6 +57,12 @@ def fetch_news():
         feed = feedparser.parse(url)
         
         for entry in feed.entries:
+            
+            if entry.link in seen_urls:
+                continue
+            
+            seen_urls.add(entry.link)
+            
             title_parts = entry.title.split(" - ")
             source = title_parts[-1] if len(title_parts) > 1 else "Unknown"
             clean_title = " - ".join(title_parts[:-1]) if len(title_parts) > 1 else entry.title
