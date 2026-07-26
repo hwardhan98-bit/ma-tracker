@@ -1,0 +1,2213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>Global M&A Terminal</title>
+
+<meta
+    name="description"
+    content="Free Global Mergers & Acquisitions Intelligence Platform">
+
+<meta
+    name="theme-color"
+    content="#0F172A">
+
+<!-- ===================================================== -->
+<!-- GOOGLE FONT -->
+<!-- ===================================================== -->
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+<!-- ===================================================== -->
+<!-- TAILWIND -->
+<!-- ===================================================== -->
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+
+tailwind.config = {
+
+    theme: {
+
+        extend: {
+
+            colors: {
+
+                primary: "#2563EB",
+
+                secondary: "#0F172A",
+
+                panel: "#111827",
+
+                border: "#1F2937"
+
+            }
+
+        }
+
+    }
+
+}
+
+</script>
+
+<!-- ===================================================== -->
+<!-- BOOTSTRAP ICONS -->
+<!-- ===================================================== -->
+
+<link
+rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<!-- ===================================================== -->
+<!-- CHART JS -->
+<!-- ===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- ===================================================== -->
+<!-- SUPABASE -->
+<!-- ===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- ===================================================== -->
+<!-- CUSTOM CSS -->
+<!-- ===================================================== -->
+
+<link
+rel="stylesheet"
+href="css/styles.css">
+
+</head>
+
+<body class="bg-slate-950 text-slate-100 font-[Inter]">
+
+<!-- ===================================================== -->
+<!-- APP CONTAINER -->
+<!-- ===================================================== -->
+
+<div id="app">
+
+<!-- ===================================================== -->
+<!-- NAVIGATION -->
+<!-- ===================================================== -->
+
+<header
+class="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+
+<div
+class="max-w-screen-2xl mx-auto px-8 py-5 flex justify-between items-center">
+
+<!-- LEFT -->
+
+<div>
+
+<h1
+class="text-3xl font-bold">
+
+<span class="text-blue-500">
+
+Global
+
+</span>
+
+<span>
+
+M&A Terminal
+
+</span>
+
+</h1>
+
+<p
+class="text-slate-400 text-sm mt-1">
+
+Free M&A Intelligence Platform
+
+</p>
+
+</div>
+
+<!-- CENTER -->
+
+<nav
+class="hidden xl:flex gap-10 text-slate-400">
+
+<a href="#dashboard"
+class="hover:text-white">
+
+Dashboard
+
+</a>
+
+<a href="#analytics"
+class="hover:text-white">
+
+Analytics
+
+</a>
+
+<a href="#deals"
+class="hover:text-white">
+
+Deals
+
+</a>
+
+<a href="#about"
+class="hover:text-white">
+
+About
+
+</a>
+
+</nav>
+
+<!-- RIGHT -->
+
+<div
+class="flex gap-3">
+
+<button
+id="themeButton"
+class="top-button">
+
+<i class="bi bi-moon-stars"></i>
+
+</button>
+
+<button
+id="refreshButton"
+class="top-button">
+
+<i class="bi bi-arrow-clockwise"></i>
+
+Refresh
+
+</button>
+
+<button
+id="exportButton"
+class="bg-blue-600 hover:bg-blue-700 transition px-5 py-2 rounded-lg">
+
+<i class="bi bi-download"></i>
+
+Export CSV
+
+</button>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- ===================================================== -->
+<!-- LIVE MARKET BAR -->
+<!-- ===================================================== -->
+
+<section
+class="border-b border-slate-800 bg-slate-900">
+
+<div
+class="max-w-screen-2xl mx-auto px-8 py-4">
+
+<div
+class="flex flex-wrap items-center gap-6">
+
+<div
+class="flex items-center gap-2 text-orange-400 font-semibold">
+
+<span
+class="animate-pulse">
+
+●
+
+</span>
+
+LIVE MARKET
+
+</div>
+
+<div>
+
+Deals This Week
+
+<strong
+id="weekDealCount">
+
+--
+
+</strong>
+
+</div>
+
+<div>
+
+Announced Value
+
+<strong
+id="weeklyDealValue">
+
+--
+
+</strong>
+
+</div>
+
+<div>
+
+Largest Deal
+
+<strong
+id="largestDealBanner">
+
+--
+
+</strong>
+
+</div>
+
+<div>
+
+Average Deal
+
+<strong
+id="averageDealBanner">
+
+--
+
+</strong>
+
+</div>
+
+<div
+class="ml-auto text-slate-400">
+
+Updated
+
+<span
+id="lastUpdatedBanner">
+
+--
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+<!-- ===================================================== -->
+<!-- HERO SEARCH -->
+<!-- ===================================================== -->
+
+<section id="dashboard" class="max-w-screen-2xl mx-auto px-8 pt-10">
+
+    <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-slate-800 border border-slate-800 rounded-2xl p-8">
+
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+
+            <div class="flex-1">
+
+                <h2 class="text-4xl font-bold leading-tight">
+
+                    Discover Global
+                    <span class="text-blue-400">M&A Transactions</span>
+
+                </h2>
+
+                <p class="text-slate-400 mt-3 text-lg max-w-3xl">
+
+                    Search acquisitions, mergers, strategic investments, joint ventures and private equity transactions across industries and regions.
+
+                </p>
+
+                <div class="relative mt-8">
+
+                    <i class="bi bi-search absolute left-5 top-5 text-slate-400 text-xl"></i>
+
+                    <input
+                        id="globalSearch"
+                        type="text"
+                        autocomplete="off"
+                        placeholder="Search company, acquirer, target, advisor, industry..."
+                        class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-14 pr-5 py-5 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                </div>
+
+                <!-- Quick Search -->
+
+                <div class="mt-6">
+
+                    <p class="text-sm text-slate-400 mb-3">
+
+                        Popular Searches
+
+                    </p>
+
+                    <div class="flex flex-wrap gap-3">
+
+                        <button class="search-chip">
+                            Technology
+                        </button>
+
+                        <button class="search-chip">
+                            Healthcare
+                        </button>
+
+                        <button class="search-chip">
+                            Artificial Intelligence
+                        </button>
+
+                        <button class="search-chip">
+                            Private Equity
+                        </button>
+
+                        <button class="search-chip">
+                            India
+                        </button>
+
+                        <button class="search-chip">
+                            Europe
+                        </button>
+
+                        <button class="search-chip">
+                            Semiconductors
+                        </button>
+
+                        <button class="search-chip">
+                            Renewable Energy
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Hero Right -->
+
+            <div class="lg:w-96">
+
+                <div class="bg-slate-950 border border-slate-700 rounded-xl p-6">
+
+                    <h3 class="font-semibold text-lg">
+
+                        Market Snapshot
+
+                    </h3>
+
+                    <div class="mt-5 space-y-4">
+
+                        <div class="flex justify-between">
+
+                            <span class="text-slate-400">
+
+                                Total Deals
+
+                            </span>
+
+                            <strong id="snapshotDeals">
+
+                                --
+
+                            </strong>
+
+                        </div>
+
+                        <div class="flex justify-between">
+
+                            <span class="text-slate-400">
+
+                                Total Deal Value
+
+                            </span>
+
+                            <strong id="snapshotValue">
+
+                                --
+
+                            </strong>
+
+                        </div>
+
+                        <div class="flex justify-between">
+
+                            <span class="text-slate-400">
+
+                                Top Sector
+
+                            </span>
+
+                            <strong id="snapshotSector">
+
+                                --
+
+                            </strong>
+
+                        </div>
+
+                        <div class="flex justify-between">
+
+                            <span class="text-slate-400">
+
+                                Most Active Region
+
+                            </span>
+
+                            <strong id="snapshotRegion">
+
+                                --
+
+                            </strong>
+
+                        </div>
+
+                        <div class="flex justify-between">
+
+                            <span class="text-slate-400">
+
+                                Last Updated
+
+                            </span>
+
+                            <strong id="snapshotUpdated">
+
+                                --
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- KPI DASHBOARD -->
+<!-- ===================================================== -->
+
+<section class="max-w-screen-2xl mx-auto px-8 mt-10">
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">
+
+        <!-- Card 1 -->
+
+        <div class="kpi-card">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="kpi-label">
+
+                        Deals Today
+
+                    </p>
+
+                    <h2
+                        id="todayDeals"
+                        class="kpi-number">
+
+                        --
+
+                    </h2>
+
+                </div>
+
+                <div class="kpi-icon bg-blue-500/15 text-blue-400">
+
+                    <i class="bi bi-calendar-event"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Card 2 -->
+
+        <div class="kpi-card">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="kpi-label">
+
+                        This Week
+
+                    </p>
+
+                    <h2
+                        id="weekDeals"
+                        class="kpi-number">
+
+                        --
+
+                    </h2>
+
+                </div>
+
+                <div class="kpi-icon bg-emerald-500/15 text-emerald-400">
+
+                    <i class="bi bi-graph-up-arrow"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Card 3 -->
+
+        <div class="kpi-card">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="kpi-label">
+
+                        This Month
+
+                    </p>
+
+                    <h2
+                        id="monthDeals"
+                        class="kpi-number">
+
+                        --
+
+                    </h2>
+
+                </div>
+
+                <div class="kpi-icon bg-orange-500/15 text-orange-400">
+
+                    <i class="bi bi-bar-chart"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Card 4 -->
+
+        <div class="kpi-card">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="kpi-label">
+
+                        Largest Deal
+
+                    </p>
+
+                    <h2
+                        id="largestDeal"
+                        class="kpi-number">
+
+                        --
+
+                    </h2>
+
+                </div>
+
+                <div class="kpi-icon bg-red-500/15 text-red-400">
+
+                    <i class="bi bi-cash-stack"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Card 5 -->
+
+        <div class="kpi-card">
+
+            <div class="flex justify-between items-center">
+
+                <div>
+
+                    <p class="kpi-label">
+
+                        Average Deal
+
+                    </p>
+
+                    <h2
+                        id="averageDeal"
+                        class="kpi-number">
+
+                        --
+
+                    </h2>
+
+                </div>
+
+                <div class="kpi-icon bg-purple-500/15 text-purple-400">
+
+                    <i class="bi bi-calculator"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===================================================== -->
+<!-- MARKET INTELLIGENCE -->
+<!-- ===================================================== -->
+
+<section class="max-w-screen-2xl mx-auto px-8 mt-10">
+
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+
+        <!-- ======================================== -->
+        <!-- Trending Companies -->
+        <!-- ======================================== -->
+
+        <div class="intel-card">
+
+            <div class="intel-header">
+
+                <div class="flex items-center gap-2">
+
+                    <i class="bi bi-fire text-orange-400"></i>
+
+                    <h3 class="font-semibold">
+
+                        Trending Companies
+
+                    </h3>
+
+                </div>
+
+                <span class="text-xs text-slate-500">
+
+                    Last 7 Days
+
+                </span>
+
+            </div>
+
+            <div
+                id="trendingCompanies"
+                class="mt-5 space-y-3">
+
+                <!-- JS -->
+
+            </div>
+
+        </div>
+
+        <!-- ======================================== -->
+        <!-- Top Acquirers -->
+        <!-- ======================================== -->
+
+        <div class="intel-card">
+
+            <div class="intel-header">
+
+                <div class="flex items-center gap-2">
+
+                    <i class="bi bi-building text-blue-400"></i>
+
+                    <h3 class="font-semibold">
+
+                        Top Acquirers
+
+                    </h3>
+
+                </div>
+
+                <span class="text-xs text-slate-500">
+
+                    This Month
+
+                </span>
+
+            </div>
+
+            <div
+                id="topAcquirers"
+                class="mt-5 space-y-3">
+
+            </div>
+
+        </div>
+
+        <!-- ======================================== -->
+        <!-- Top Targets -->
+        <!-- ======================================== -->
+
+        <div class="intel-card">
+
+            <div class="intel-header">
+
+                <div class="flex items-center gap-2">
+
+                    <i class="bi bi-bullseye text-green-400"></i>
+
+                    <h3 class="font-semibold">
+
+                        Top Targets
+
+                    </h3>
+
+                </div>
+
+                <span class="text-xs text-slate-500">
+
+                    This Month
+
+                </span>
+
+            </div>
+
+            <div
+                id="topTargets"
+                class="mt-5 space-y-3">
+
+            </div>
+
+        </div>
+
+        <!-- ======================================== -->
+        <!-- Mega Deals -->
+        <!-- ======================================== -->
+
+        <div class="intel-card">
+
+            <div class="intel-header">
+
+                <div class="flex items-center gap-2">
+
+                    <i class="bi bi-trophy-fill text-yellow-400"></i>
+
+                    <h3 class="font-semibold">
+
+                        Mega Deals
+
+                    </h3>
+
+                </div>
+
+                <span class="text-xs text-slate-500">
+
+                    Largest Transactions
+
+                </span>
+
+            </div>
+
+            <div
+                id="megaDeals"
+                class="mt-5 space-y-3">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- LIVE M&A NEWS TICKER -->
+<!-- ===================================================== -->
+
+<section class="max-w-screen-2xl mx-auto px-8 mt-8">
+
+    <div
+        class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+
+        <div
+            class="flex">
+
+            <!-- Label -->
+
+            <div
+                class="bg-blue-600 px-6 py-4 font-semibold whitespace-nowrap">
+
+                LIVE NEWS
+
+            </div>
+
+            <!-- Ticker -->
+
+            <div
+                class="flex-1 overflow-hidden relative">
+
+                <div
+                    id="newsTicker"
+                    class="ticker-track">
+
+                    <!-- Generated by JS -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- MARKET HEATMAP -->
+<!-- ===================================================== -->
+
+<section class="max-w-screen-2xl mx-auto px-8 mt-8">
+
+    <div
+        class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Sector Leader -->
+
+        <div
+            class="highlight-card">
+
+            <div class="highlight-title">
+
+                <i class="bi bi-cpu-fill text-blue-400"></i>
+
+                Most Active Sector
+
+            </div>
+
+            <div
+                id="topSector"
+
+                class="highlight-value">
+
+                --
+
+            </div>
+
+            <p
+                id="sectorDescription"
+
+                class="highlight-description">
+
+                Waiting for market data...
+
+            </p>
+
+        </div>
+
+        <!-- Region -->
+
+        <div
+            class="highlight-card">
+
+            <div class="highlight-title">
+
+                <i class="bi bi-globe2 text-green-400"></i>
+
+                Most Active Region
+
+            </div>
+
+            <div
+                id="topRegion"
+
+                class="highlight-value">
+
+                --
+
+            </div>
+
+            <p
+                id="regionDescription"
+
+                class="highlight-description">
+
+                Waiting for market data...
+
+            </p>
+
+        </div>
+
+        <!-- Deal -->
+
+        <div
+            class="highlight-card">
+
+            <div class="highlight-title">
+
+                <i class="bi bi-cash-coin text-yellow-400"></i>
+
+                Deal of the Month
+
+            </div>
+
+            <div
+                id="dealOfMonth"
+
+                class="highlight-value">
+
+                --
+
+            </div>
+
+            <p
+                id="dealDescription"
+
+                class="highlight-description">
+
+                Waiting for market data...
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===================================================== -->
+<!-- ANALYTICS DASHBOARD -->
+<!-- ===================================================== -->
+
+<section id="analytics" class="max-w-screen-2xl mx-auto px-8 mt-10">
+
+    <!-- Section Header -->
+
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+
+        <div>
+
+            <h2 class="text-3xl font-bold">
+
+                Market Analytics
+
+            </h2>
+
+            <p class="text-slate-400 mt-2">
+
+                Interactive insights across industries, regions and transaction activity.
+
+            </p>
+
+        </div>
+
+        <div class="flex gap-3 mt-5 lg:mt-0">
+
+            <button id="refreshCharts"
+                class="top-button">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                Refresh Charts
+
+            </button>
+
+            <button id="downloadCharts"
+                class="top-button">
+
+                <i class="bi bi-image"></i>
+
+                Export Charts
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- =============================================== -->
+    <!-- ROW 1 -->
+    <!-- =============================================== -->
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+        <!-- Industry -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3 class="chart-title">
+
+                        Deals by Industry
+
+                    </h3>
+
+                    <p class="chart-subtitle">
+
+                        Distribution of announced transactions
+
+                    </p>
+
+                </div>
+
+                <i class="bi bi-pie-chart-fill chart-icon"></i>
+
+            </div>
+
+            <canvas id="industryChart" height="300"></canvas>
+
+        </div>
+
+        <!-- Region -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3 class="chart-title">
+
+                        Deals by Region
+
+                    </h3>
+
+                    <p class="chart-subtitle">
+
+                        Geographic activity
+
+                    </p>
+
+                </div>
+
+                <i class="bi bi-globe-americas chart-icon"></i>
+
+            </div>
+
+            <canvas id="regionChart" height="300"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- =============================================== -->
+    <!-- ROW 2 -->
+    <!-- =============================================== -->
+
+    <div class="grid grid-cols-1 gap-6 mt-6">
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3 class="chart-title">
+
+                        Monthly M&A Activity
+
+                    </h3>
+
+                    <p class="chart-subtitle">
+
+                        Number of announced deals over time
+
+                    </p>
+
+                </div>
+
+                <i class="bi bi-graph-up-arrow chart-icon"></i>
+
+            </div>
+
+            <canvas id="trendChart" height="120"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- =============================================== -->
+    <!-- ROW 3 -->
+    <!-- =============================================== -->
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-6">
+
+        <!-- Deal Value -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3 class="chart-title">
+
+                        Deal Value Distribution
+
+                    </h3>
+
+                    <p class="chart-subtitle">
+
+                        Announced transaction values
+
+                    </p>
+
+                </div>
+
+                <i class="bi bi-cash-stack chart-icon"></i>
+
+            </div>
+
+            <canvas id="valueChart" height="280"></canvas>
+
+        </div>
+
+        <!-- Deal Types -->
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div>
+
+                    <h3 class="chart-title">
+
+                        Deal Types
+
+                    </h3>
+
+                    <p class="chart-subtitle">
+
+                        Acquisition, merger, JV and more
+
+                    </p>
+
+                </div>
+
+                <i class="bi bi-diagram-3 chart-icon"></i>
+
+            </div>
+
+            <canvas id="dealTypeChart" height="280"></canvas>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- LEAGUE TABLES -->
+<!-- ===================================================== -->
+
+<section class="max-w-screen-2xl mx-auto px-8 mt-10">
+
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+        <!-- Advisor League Table -->
+
+        <div class="panel-card">
+
+            <div class="panel-header">
+
+                <h3>
+
+                    Advisor League Table
+
+                </h3>
+
+                <button class="panel-link">
+
+                    View All
+
+                </button>
+
+            </div>
+
+            <div id="advisorLeagueTable">
+
+                <!-- JS -->
+
+            </div>
+
+        </div>
+
+        <!-- Sector Performance -->
+
+        <div class="panel-card">
+
+            <div class="panel-header">
+
+                <h3>
+
+                    Sector Performance
+
+                </h3>
+
+                <button class="panel-link">
+
+                    View All
+
+                </button>
+
+            </div>
+
+            <div id="sectorPerformance">
+
+                <!-- JS -->
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ===================================================== -->
+<!-- QUICK MARKET STATS -->
+<!-- ===================================================== -->
+
+<section class="max-w-screen-2xl mx-auto px-8 mt-10">
+
+    <div class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-5">
+
+        <div class="mini-stat-card">
+
+            <span class="mini-stat-label">
+
+                Technology
+
+            </span>
+
+            <strong id="techDeals">
+
+                --
+
+            </strong>
+
+        </div>
+
+        <div class="mini-stat-card">
+
+            <span class="mini-stat-label">
+
+                Healthcare
+
+            </span>
+
+            <strong id="healthDeals">
+
+                --
+
+            </strong>
+
+        </div>
+
+        <div class="mini-stat-card">
+
+            <span class="mini-stat-label">
+
+                Financials
+
+            </span>
+
+            <strong id="financeDeals">
+
+                --
+
+            </strong>
+
+        </div>
+
+        <div class="mini-stat-card">
+
+            <span class="mini-stat-label">
+
+                Energy
+
+            </span>
+
+            <strong id="energyDeals">
+
+                --
+
+            </strong>
+
+        </div>
+
+        <div class="mini-stat-card">
+
+            <span class="mini-stat-label">
+
+                Industrials
+
+            </span>
+
+            <strong id="industrialDeals">
+
+                --
+
+            </strong>
+
+        </div>
+
+        <div class="mini-stat-card">
+
+            <span class="mini-stat-label">
+
+                Consumer
+
+            </span>
+
+            <strong id="consumerDeals">
+
+                --
+
+            </strong>
+
+        </div>
+
+        <div class="mini-stat-card">
+
+            <span class="mini-stat-label">
+
+                Media
+
+            </span>
+
+            <strong id="mediaDeals">
+
+                --
+
+            </strong>
+
+        </div>
+
+        <div class="mini-stat-card">
+
+            <span class="mini-stat-label">
+
+                Telecom
+
+            </span>
+
+            <strong id="telecomDeals">
+
+                --
+
+            </strong>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===================================================== -->
+<!-- DEAL EXPLORER -->
+<!-- ===================================================== -->
+
+<section id="deals" class="max-w-screen-2xl mx-auto px-8 mt-12 mb-16">
+
+    <div class="flex items-center justify-between mb-6">
+
+        <div>
+
+            <h2 class="text-3xl font-bold">
+
+                Deal Explorer
+
+            </h2>
+
+            <p class="text-slate-400 mt-2">
+
+                Browse, filter and analyze global M&A transactions.
+
+            </p>
+
+        </div>
+
+        <div class="flex gap-3">
+
+            <button
+                id="bookmarkDeals"
+                class="top-button">
+
+                <i class="bi bi-star"></i>
+
+                Bookmarks
+
+            </button>
+
+            <button
+                id="refreshDeals"
+                class="top-button">
+
+                <i class="bi bi-arrow-repeat"></i>
+
+                Refresh
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-12 gap-8">
+
+        <!-- =========================================== -->
+        <!-- LEFT FILTER SIDEBAR -->
+        <!-- =========================================== -->
+
+        <aside class="col-span-12 xl:col-span-3">
+
+            <div class="filter-panel sticky top-28">
+
+                <div class="flex items-center justify-between mb-6">
+
+                    <h3 class="text-xl font-semibold">
+
+                        Filters
+
+                    </h3>
+
+                    <button
+                        id="resetFilters"
+                        class="text-blue-400 text-sm">
+
+                        Reset
+
+                    </button>
+
+                </div>
+
+                <!-- Search -->
+
+                <label class="filter-label">
+
+                    Company / Keyword
+
+                </label>
+
+                <input
+                    id="searchKeyword"
+                    class="filter-input"
+                    placeholder="Microsoft, Reliance...">
+
+                <!-- Industry -->
+
+                <label class="filter-label">
+
+                    Industry
+
+                </label>
+
+                <select
+                    id="industryFilter"
+                    class="filter-select">
+
+                    <option value="">
+
+                        All Industries
+
+                    </option>
+
+                </select>
+
+                <!-- Region -->
+
+                <label class="filter-label">
+
+                    Region
+
+                </label>
+
+                <select
+                    id="regionFilter"
+                    class="filter-select">
+
+                    <option value="">
+
+                        All Regions
+
+                    </option>
+
+                </select>
+
+                <!-- Deal Type -->
+
+                <label class="filter-label">
+
+                    Deal Type
+
+                </label>
+
+                <select
+                    id="dealTypeFilter"
+                    class="filter-select">
+
+                    <option value="">
+
+                        All Types
+
+                    </option>
+
+                </select>
+
+                <!-- Source -->
+
+                <label class="filter-label">
+
+                    Source
+
+                </label>
+
+                <select
+                    id="sourceFilter"
+                    class="filter-select">
+
+                    <option value="">
+
+                        All Sources
+
+                    </option>
+
+                </select>
+
+                <!-- Deal Value -->
+
+                <label class="filter-label">
+
+                    Minimum Deal Value ($M)
+
+                </label>
+
+                <input
+                    type="number"
+                    id="minDealValue"
+                    class="filter-input"
+                    placeholder="100">
+
+                <!-- Date -->
+
+                <label class="filter-label">
+
+                    Date Range
+
+                </label>
+
+                <div class="grid grid-cols-2 gap-2">
+
+                    <input
+                        id="startDate"
+                        type="date"
+                        class="filter-input">
+
+                    <input
+                        id="endDate"
+                        type="date"
+                        class="filter-input">
+
+                </div>
+
+                <!-- Sort -->
+
+                <label class="filter-label">
+
+                    Sort By
+
+                </label>
+
+                <select
+                    id="sortDeals"
+                    class="filter-select">
+
+                    <option value="latest">
+
+                        Latest
+
+                    </option>
+
+                    <option value="oldest">
+
+                        Oldest
+
+                    </option>
+
+                    <option value="largest">
+
+                        Largest Deal
+
+                    </option>
+
+                    <option value="smallest">
+
+                        Smallest Deal
+
+                    </option>
+
+                </select>
+
+                <button
+                    id="applyFilters"
+                    class="w-full bg-blue-600 hover:bg-blue-700 rounded-xl py-3 mt-8 font-semibold">
+
+                    Apply Filters
+
+                </button>
+
+            </div>
+
+        </aside>
+
+        <!-- =========================================== -->
+        <!-- RIGHT CONTENT -->
+        <!-- =========================================== -->
+
+        <div class="col-span-12 xl:col-span-9">
+
+            <!-- ======================================= -->
+            <!-- Top News Sources -->
+            <!-- ======================================= -->
+
+            <div class="panel-card mb-6">
+
+                <div class="panel-header">
+
+                    <h3>
+
+                        Top News Sources
+
+                    </h3>
+
+                    <button class="panel-link">
+
+                        View All
+
+                    </button>
+
+                </div>
+
+                <div
+                    id="topSources"
+
+                    class="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+
+                    <!-- JS -->
+
+                </div>
+
+            </div>
+
+            <!-- ======================================= -->
+            <!-- Results Header -->
+            <!-- ======================================= -->
+
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+
+                <div>
+
+                    <h3 class="text-2xl font-semibold">
+
+                        Latest Deals
+
+                    </h3>
+
+                    <p class="text-slate-400">
+
+                        <span id="dealCount">
+
+                            0
+
+                        </span>
+
+                        deals found
+
+                    </p>
+
+                </div>
+
+                <div class="flex gap-3 mt-4 lg:mt-0">
+
+                    <button
+                        id="gridView"
+                        class="top-button">
+
+                        <i class="bi bi-grid-3x3-gap-fill"></i>
+
+                    </button>
+
+                    <button
+                        id="listView"
+                        class="top-button">
+
+                        <i class="bi bi-list"></i>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- ======================================= -->
+            <!-- Loading -->
+            <!-- ======================================= -->
+
+            <div
+                id="loadingDeals"
+
+                class="hidden">
+
+                <div class="flex justify-center py-20">
+
+                    <div class="loader"></div>
+
+                </div>
+
+            </div>
+
+            <!-- ======================================= -->
+            <!-- Empty State -->
+            <!-- ======================================= -->
+
+            <div
+                id="emptyDeals"
+
+                class="hidden">
+
+                <div class="panel-card text-center py-20">
+
+                    <i class="bi bi-search text-6xl text-slate-600"></i>
+
+                    <h3 class="text-2xl mt-5">
+
+                        No Deals Found
+
+                    </h3>
+
+                    <p class="text-slate-400 mt-2">
+
+                        Try adjusting your search filters.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- ======================================= -->
+            <!-- Deal Cards -->
+            <!-- ======================================= -->
+
+            <div
+                id="dealGrid"
+
+                class="grid lg:grid-cols-2 gap-6">
+
+                <!-- Cards rendered by ui.js -->
+
+            </div>
+
+            <!-- ======================================= -->
+            <!-- Load More -->
+            <!-- ======================================= -->
+
+            <div class="text-center mt-10">
+
+                <button
+                    id="loadMoreDeals"
+                    class="bg-blue-600 hover:bg-blue-700 px-10 py-3 rounded-xl font-semibold">
+
+                    Load More Deals
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ===================================================== -->
+<!-- DEAL DETAILS MODAL -->
+<!-- ===================================================== -->
+
+<div
+    id="dealModal"
+    class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-[9999]">
+
+    <div class="flex items-center justify-center min-h-screen p-6">
+
+        <div
+            class="bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
+
+            <!-- Modal Header -->
+
+            <div
+                class="flex items-center justify-between border-b border-slate-800 px-8 py-6">
+
+                <div>
+
+                    <h2
+                        id="modalTitle"
+                        class="text-2xl font-bold">
+
+                        Deal Details
+
+                    </h2>
+
+                    <p
+                        id="modalSubtitle"
+                        class="text-slate-400 mt-1">
+
+                        Global M&A Transaction
+
+                    </p>
+
+                </div>
+
+                <button
+                    id="closeModal"
+                    class="text-slate-400 hover:text-white text-3xl">
+
+                    <i class="bi bi-x-lg"></i>
+
+                </button>
+
+            </div>
+
+            <!-- Modal Body -->
+
+            <div
+                id="modalBody"
+                class="overflow-y-auto max-h-[70vh] px-8 py-8">
+
+                <!-- JS renders complete deal details -->
+
+            </div>
+
+            <!-- Modal Footer -->
+
+            <div
+                class="border-t border-slate-800 px-8 py-5 flex flex-wrap gap-3 justify-end">
+
+                <button
+                    id="bookmarkDeal"
+                    class="top-button">
+
+                    <i class="bi bi-star"></i>
+
+                    Bookmark
+
+                </button>
+
+                <button
+                    id="shareDeal"
+                    class="top-button">
+
+                    <i class="bi bi-share"></i>
+
+                    Share
+
+                </button>
+
+                <button
+                    id="copyLink"
+                    class="top-button">
+
+                    <i class="bi bi-link-45deg"></i>
+
+                    Copy Link
+
+                </button>
+
+                <a
+                    id="readArticle"
+                    href="#"
+                    target="_blank"
+                    class="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-lg">
+
+                    Read Original Article
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- SCROLL TO TOP -->
+<!-- ===================================================== -->
+
+<button
+    id="scrollTop"
+
+    class="hidden fixed bottom-8 right-8 h-12 w-12 rounded-full bg-blue-600 hover:bg-blue-700 shadow-xl z-50">
+
+    <i class="bi bi-arrow-up"></i>
+
+</button>
+
+<!-- ===================================================== -->
+<!-- NOTIFICATION TOAST -->
+<!-- ===================================================== -->
+
+<div
+    id="toast"
+
+    class="hidden fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 border border-slate-700 rounded-xl px-6 py-4 shadow-2xl z-50">
+
+    <span id="toastMessage">
+
+        Success
+
+    </span>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- FOOTER -->
+<!-- ===================================================== -->
+
+<footer
+    id="about"
+
+    class="border-t border-slate-800 bg-slate-950 mt-20">
+
+    <div
+        class="max-w-screen-2xl mx-auto px-8 py-14">
+
+        <div
+            class="grid md:grid-cols-2 xl:grid-cols-4 gap-10">
+
+            <!-- Logo -->
+
+            <div>
+
+                <h2 class="text-2xl font-bold">
+
+                    <span class="text-blue-500">
+
+                        Global
+
+                    </span>
+
+                    M&A Terminal
+
+                </h2>
+
+                <p class="text-slate-400 mt-4">
+
+                    A free intelligence platform for mergers &
+                    acquisitions built using publicly available
+                    information from trusted news and regulatory
+                    sources.
+
+                </p>
+
+            </div>
+
+            <!-- Features -->
+
+            <div>
+
+                <h3 class="font-semibold mb-4">
+
+                    Features
+
+                </h3>
+
+                <ul class="space-y-2 text-slate-400">
+
+                    <li>Global Deal Search</li>
+
+                    <li>Interactive Analytics</li>
+
+                    <li>Industry Dashboard</li>
+
+                    <li>Bookmarks</li>
+
+                    <li>CSV Export</li>
+
+                </ul>
+
+            </div>
+
+            <!-- Sources -->
+
+            <div>
+
+                <h3 class="font-semibold mb-4">
+
+                    Sources
+
+                </h3>
+
+                <ul class="space-y-2 text-slate-400">
+
+                    <li>Google News RSS</li>
+
+                    <li>Reuters</li>
+
+                    <li>Business Wire</li>
+
+                    <li>PR Newswire</li>
+
+                    <li>Company Press Releases</li>
+
+                </ul>
+
+            </div>
+
+            <!-- Statistics -->
+
+            <div>
+
+                <h3 class="font-semibold mb-4">
+
+                    Platform
+
+                </h3>
+
+                <div class="space-y-3">
+
+                    <div class="flex justify-between">
+
+                        <span class="text-slate-400">
+
+                            Indexed Deals
+
+                        </span>
+
+                        <strong id="footerDeals">
+
+                            --
+
+                        </strong>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span class="text-slate-400">
+
+                            Sources
+
+                        </span>
+
+                        <strong>
+
+                            5+
+
+                        </strong>
+
+                    </div>
+
+                    <div class="flex justify-between">
+
+                        <span class="text-slate-400">
+
+                            Last Updated
+
+                        </span>
+
+                        <strong id="footerUpdated">
+
+                            --
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Bottom -->
+
+        <div
+            class="border-t border-slate-800 mt-10 pt-8 flex flex-col lg:flex-row justify-between gap-5">
+
+            <div class="text-slate-500">
+
+                © 2026 Global M&A Terminal
+
+            </div>
+
+            <div class="text-slate-500">
+
+                Built using GitHub Pages + Supabase + Python + Public Data Sources
+
+            </div>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</div>
+
+<!-- ===================================================== -->
+<!-- JAVASCRIPT MODULES -->
+<!-- ===================================================== -->
+
+<script src="js/config.js"></script>
+
+<script src="js/utils.js"></script>
+
+<script src="js/api.js"></script>
+
+<script src="js/ui.js"></script>
+
+<script src="js/charts.js"></script>
+
+<script src="js/filters.js"></script>
+
+<script src="js/bookmarks.js"></script>
+
+<script src="js/export.js"></script>
+
+<script src="js/app.js"></script>
+
+</body>
+
+</html>
