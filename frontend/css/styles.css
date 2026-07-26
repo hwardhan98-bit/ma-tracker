@@ -1,0 +1,2582 @@
+/* ==========================================================
+   GLOBAL M&A TERMINAL
+   styles.css
+   ========================================================== */
+
+
+/* ==========================================================
+   ROOT VARIABLES
+   ========================================================== */
+
+:root {
+
+    --bg-primary: #020617;
+    --bg-secondary: #0f172a;
+    --bg-card: #111827;
+
+    --border: #1e293b;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+
+    --blue: #3b82f6;
+    --green: #22c55e;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --purple: #8b5cf6;
+
+    --radius: 16px;
+
+    --transition: 0.18s ease;
+
+    --shadow:
+        0 10px 30px rgba(0,0,0,.25);
+
+}
+
+
+/* ==========================================================
+   RESET
+   ========================================================== */
+
+*,
+*::before,
+*::after{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    background:var(--bg-primary);
+
+    color:var(--text-primary);
+
+    font-family:"Inter",sans-serif;
+
+    line-height:1.55;
+
+    overflow-x:hidden;
+
+    -webkit-font-smoothing:antialiased;
+
+}
+
+
+/* ==========================================================
+   TYPOGRAPHY
+   ========================================================== */
+
+h1,h2,h3,h4,h5{
+
+    font-weight:700;
+
+    letter-spacing:-0.02em;
+
+}
+
+p{
+
+    color:var(--text-secondary);
+
+}
+
+a{
+
+    color:inherit;
+
+    text-decoration:none;
+
+}
+
+img{
+
+    display:block;
+
+    max-width:100%;
+
+}
+
+
+/* ==========================================================
+   COMMON TRANSITIONS
+   ========================================================== */
+
+button,
+input,
+select,
+textarea,
+.card{
+
+    transition:all var(--transition);
+
+}
+
+
+/* ==========================================================
+   COMMON CARDS
+   ========================================================== */
+
+.intel-card,
+.chart-card,
+.panel-card,
+.highlight-card,
+.filter-panel{
+
+    background:var(--bg-card);
+
+    border:1px solid var(--border);
+
+    border-radius:var(--radius);
+
+    box-shadow:var(--shadow);
+
+}
+
+
+/* ==========================================================
+   PANEL HEADER
+   ========================================================== */
+
+.panel-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+.panel-link{
+
+    background:none;
+
+    border:none;
+
+    color:var(--blue);
+
+    cursor:pointer;
+
+    font-size:.9rem;
+
+}
+
+.panel-link:hover{
+
+    opacity:.75;
+
+}
+
+
+/* ==========================================================
+   SECTION SPACING
+   ========================================================== */
+
+section{
+
+    scroll-margin-top:90px;
+
+}
+/* ==========================================================
+   TOP NAVIGATION
+   ========================================================== */
+
+nav{
+
+    backdrop-filter:blur(18px);
+
+    background:rgba(2,6,23,.88);
+
+    border-bottom:1px solid var(--border);
+
+    transition:all .25s ease;
+
+}
+
+nav a{
+
+    color:var(--text-secondary);
+
+    font-size:.95rem;
+
+    font-weight:500;
+
+    position:relative;
+
+    transition:color var(--transition);
+
+}
+
+nav a:hover{
+
+    color:var(--text-primary);
+
+}
+
+nav a::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    bottom:-8px;
+
+    width:0;
+
+    height:2px;
+
+    background:var(--blue);
+
+    transition:.25s;
+
+}
+
+nav a:hover::after{
+
+    width:100%;
+
+}
+
+
+/* ==========================================================
+   TOP BUTTONS
+   ========================================================== */
+
+.top-button{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    padding:10px 18px;
+
+    border-radius:12px;
+
+    background:var(--bg-card);
+
+    border:1px solid var(--border);
+
+    color:var(--text-secondary);
+
+    cursor:pointer;
+
+    font-size:.92rem;
+
+    font-weight:600;
+
+}
+
+.top-button:hover{
+
+    background:#1e293b;
+
+    color:white;
+
+    transform:translateY(-2px);
+
+}
+
+
+/* ==========================================================
+   LIVE MARKET BAR
+   ========================================================== */
+
+.market-banner{
+
+    background:linear-gradient(
+        90deg,
+        #071226,
+        #0f172a,
+        #071226
+    );
+
+    border-bottom:1px solid var(--border);
+
+}
+
+.market-item{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+}
+
+.market-label{
+
+    color:var(--text-muted);
+
+    font-size:.75rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+}
+
+.market-value{
+
+    font-weight:700;
+
+    color:white;
+
+    font-size:1rem;
+
+}
+
+.market-positive{
+
+    color:var(--green);
+
+}
+
+.market-negative{
+
+    color:var(--red);
+
+}
+
+
+/* ==========================================================
+   HERO SECTION
+   ========================================================== */
+
+.hero-card{
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(30,41,59,.95),
+            rgba(15,23,42,.96)
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    box-shadow:var(--shadow);
+
+}
+
+.hero-card h2{
+
+    line-height:1.15;
+
+}
+
+.hero-card p{
+
+    max-width:760px;
+
+}
+
+.hero-card input{
+
+    width:100%;
+
+}
+
+
+/* ==========================================================
+   GLOBAL SEARCH
+   ========================================================== */
+
+#globalSearch{
+
+    background:#020617;
+
+    border:1px solid #334155;
+
+    color:white;
+
+    border-radius:14px;
+
+    font-size:1rem;
+
+    transition:all .2s ease;
+
+}
+
+#globalSearch::placeholder{
+
+    color:#64748b;
+
+}
+
+#globalSearch:focus{
+
+    outline:none;
+
+    border-color:var(--blue);
+
+    box-shadow:
+        0 0 0 4px rgba(59,130,246,.18);
+
+}
+
+
+/* ==========================================================
+   SEARCH CHIPS
+   ========================================================== */
+
+.search-chip{
+
+    background:#172554;
+
+    border:1px solid #1d4ed8;
+
+    color:#bfdbfe;
+
+    padding:8px 16px;
+
+    border-radius:999px;
+
+    cursor:pointer;
+
+    font-size:.84rem;
+
+    font-weight:500;
+
+    transition:all .18s ease;
+
+}
+
+.search-chip:hover{
+
+    background:var(--blue);
+
+    color:white;
+
+    transform:translateY(-2px);
+
+}
+
+.search-chip.active{
+
+    background:var(--blue);
+
+    color:white;
+
+}
+
+
+/* ==========================================================
+   MARKET SNAPSHOT
+   ========================================================== */
+
+.snapshot-card{
+
+    background:#020617;
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:24px;
+
+}
+
+.snapshot-card h3{
+
+    margin-bottom:18px;
+
+}
+
+.snapshot-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:10px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.snapshot-row:last-child{
+
+    border-bottom:none;
+
+}
+
+.snapshot-row span{
+
+    color:var(--text-muted);
+
+}
+
+.snapshot-row strong{
+
+    color:white;
+
+}
+
+
+/* ==========================================================
+   HERO METRICS
+   ========================================================== */
+
+.metric-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:rgba(59,130,246,.12);
+
+    border:1px solid rgba(59,130,246,.25);
+
+    color:#dbeafe;
+
+    font-size:.82rem;
+
+    font-weight:600;
+
+}
+
+
+/* ==========================================================
+   ICON CONTAINERS
+   ========================================================== */
+
+.icon-circle{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+/* ==========================================================
+   HOVER EFFECTS
+   ========================================================== */
+
+.hero-card,
+.snapshot-card,
+.market-item{
+
+    transition:.2s ease;
+
+}
+
+.hero-card:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.snapshot-card:hover{
+
+    border-color:#334155;
+
+}
+
+.market-item:hover{
+
+    transform:scale(1.03);
+
+}
+
+
+/* ==========================================================
+   DIVIDER
+   ========================================================== */
+
+.section-divider{
+
+    height:1px;
+
+    background:linear-gradient(
+        to right,
+        transparent,
+        #334155,
+        transparent
+    );
+
+    margin:32px 0;
+
+}
+/* ==========================================================
+   KPI CARDS
+   ========================================================== */
+
+.kpi-card{
+
+    background:var(--bg-card);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:24px;
+
+    box-shadow:var(--shadow);
+
+    transition:all .2s ease;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.kpi-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:3px;
+
+    background:linear-gradient(
+        90deg,
+        var(--blue),
+        var(--purple)
+    );
+
+    transform:scaleX(0);
+
+    transform-origin:left;
+
+    transition:.25s;
+
+}
+
+.kpi-card:hover{
+
+    transform:translateY(-5px);
+
+    border-color:#334155;
+
+}
+
+.kpi-card:hover::before{
+
+    transform:scaleX(1);
+
+}
+
+.kpi-label{
+
+    color:var(--text-muted);
+
+    font-size:.82rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    margin-bottom:10px;
+
+}
+
+.kpi-number{
+
+    font-size:2rem;
+
+    font-weight:700;
+
+    color:white;
+
+    line-height:1;
+
+}
+
+.kpi-icon{
+
+    width:56px;
+
+    height:56px;
+
+    border-radius:14px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:1.35rem;
+
+}
+
+
+/* ==========================================================
+   MARKET INTELLIGENCE
+   ========================================================== */
+
+.intel-card{
+
+    padding:24px;
+
+    transition:all .2s ease;
+
+}
+
+.intel-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:#334155;
+
+}
+
+.intel-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:18px;
+
+    padding-bottom:14px;
+
+    border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+.intel-header h3{
+
+    font-size:1.05rem;
+
+}
+
+.intel-header i{
+
+    font-size:1.1rem;
+
+}
+
+
+/* ==========================================================
+   INTELLIGENCE ROW
+   ========================================================== */
+
+.intel-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:12px 0;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.intel-row:last-child{
+
+    border-bottom:none;
+
+}
+
+.intel-name{
+
+    font-weight:600;
+
+    color:white;
+
+}
+
+.intel-meta{
+
+    color:var(--text-muted);
+
+    font-size:.82rem;
+
+}
+
+.intel-value{
+
+    color:var(--blue);
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================================
+   BADGES
+   ========================================================== */
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:5px 12px;
+
+    border-radius:999px;
+
+    font-size:.74rem;
+
+    font-weight:600;
+
+}
+
+.badge-blue{
+
+    background:rgba(59,130,246,.14);
+
+    color:#bfdbfe;
+
+}
+
+.badge-green{
+
+    background:rgba(34,197,94,.15);
+
+    color:#bbf7d0;
+
+}
+
+.badge-orange{
+
+    background:rgba(245,158,11,.15);
+
+    color:#fde68a;
+
+}
+
+.badge-red{
+
+    background:rgba(239,68,68,.14);
+
+    color:#fecaca;
+
+}
+
+
+/* ==========================================================
+   LIVE NEWS TICKER
+   ========================================================== */
+
+#newsTicker{
+
+    display:flex;
+
+    align-items:center;
+
+    white-space:nowrap;
+
+    gap:70px;
+
+    padding:16px 0;
+
+    animation:tickerMove 35s linear infinite;
+
+}
+
+#newsTicker:hover{
+
+    animation-play-state:paused;
+
+}
+
+.news-item{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:.92rem;
+
+}
+
+.news-dot{
+
+    width:8px;
+
+    height:8px;
+
+    border-radius:50%;
+
+    background:var(--blue);
+
+    flex-shrink:0;
+
+}
+
+.news-time{
+
+    color:var(--text-muted);
+
+    font-size:.8rem;
+
+}
+
+.news-title{
+
+    color:white;
+
+}
+
+.news-title:hover{
+
+    color:#93c5fd;
+
+}
+
+@keyframes tickerMove{
+
+    from{
+
+        transform:translateX(100%);
+
+    }
+
+    to{
+
+        transform:translateX(-100%);
+
+    }
+
+}
+
+
+/* ==========================================================
+   HIGHLIGHT CARDS
+   ========================================================== */
+
+.highlight-card{
+
+    padding:24px;
+
+    transition:.2s ease;
+
+}
+
+.highlight-card:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.highlight-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    font-size:.92rem;
+
+    color:var(--text-secondary);
+
+    margin-bottom:18px;
+
+}
+
+.highlight-value{
+
+    font-size:1.65rem;
+
+    font-weight:700;
+
+    color:white;
+
+    margin-bottom:10px;
+
+}
+
+.highlight-description{
+
+    font-size:.9rem;
+
+    color:var(--text-muted);
+
+    line-height:1.6;
+
+}
+
+
+/* ==========================================================
+   STATUS INDICATORS
+   ========================================================== */
+
+.status-up{
+
+    color:var(--green);
+
+}
+
+.status-down{
+
+    color:var(--red);
+
+}
+
+.status-neutral{
+
+    color:var(--text-muted);
+
+}
+
+
+/* ==========================================================
+   LIST ITEMS
+   ========================================================== */
+
+.list-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:16px;
+
+    padding:12px 0;
+
+}
+
+.list-item+.list-item{
+
+    border-top:1px solid rgba(255,255,255,.05);
+
+}
+
+
+/* ==========================================================
+   SECTION TITLES
+   ========================================================== */
+
+.section-title{
+
+    font-size:1.8rem;
+
+    font-weight:700;
+
+    color:white;
+
+}
+
+.section-subtitle{
+
+    margin-top:6px;
+
+    color:var(--text-muted);
+
+    font-size:.95rem;
+
+}
+/* ==========================================================
+   ANALYTICS DASHBOARD
+   ========================================================== */
+
+.chart-card{
+
+    padding:28px;
+
+    transition:all .2s ease;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.chart-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:#334155;
+
+}
+
+.chart-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    height:3px;
+
+    background:linear-gradient(
+        90deg,
+        var(--blue),
+        var(--green)
+    );
+
+    transform:scaleX(0);
+
+    transform-origin:left;
+
+    transition:.25s;
+
+}
+
+.chart-card:hover::before{
+
+    transform:scaleX(1);
+
+}
+
+
+/* ==========================================================
+   CHART HEADER
+   ========================================================== */
+
+.chart-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin-bottom:24px;
+
+}
+
+.chart-title{
+
+    font-size:1.15rem;
+
+    font-weight:700;
+
+    color:white;
+
+}
+
+.chart-subtitle{
+
+    margin-top:6px;
+
+    font-size:.88rem;
+
+    color:var(--text-muted);
+
+}
+
+.chart-icon{
+
+    font-size:1.4rem;
+
+    color:var(--blue);
+
+}
+
+
+/* ==========================================================
+   CHART CONTAINER
+   ========================================================== */
+
+.chart-card canvas{
+
+    width:100% !important;
+
+    max-width:100%;
+
+}
+
+.chart-toolbar{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+.chart-filter{
+
+    padding:8px 14px;
+
+    border-radius:10px;
+
+    border:1px solid var(--border);
+
+    background:var(--bg-secondary);
+
+    color:var(--text-secondary);
+
+    cursor:pointer;
+
+}
+
+.chart-filter:hover{
+
+    border-color:var(--blue);
+
+}
+
+
+/* ==========================================================
+   TOP NEWS SOURCES
+   ========================================================== */
+
+.source-card{
+
+    background:#0f172a;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:18px;
+
+    transition:.2s;
+
+    cursor:pointer;
+
+}
+
+.source-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:#334155;
+
+}
+
+.source-name{
+
+    font-weight:700;
+
+    color:white;
+
+}
+
+.source-count{
+
+    margin-top:8px;
+
+    font-size:1.6rem;
+
+    color:var(--blue);
+
+    font-weight:700;
+
+}
+
+.source-meta{
+
+    margin-top:6px;
+
+    color:var(--text-muted);
+
+    font-size:.82rem;
+
+}
+
+
+/* ==========================================================
+   PERFORMANCE TABLES
+   ========================================================== */
+
+.performance-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.performance-table tr{
+
+    transition:.18s;
+
+}
+
+.performance-table tr:hover{
+
+    background:rgba(255,255,255,.03);
+
+}
+
+.performance-table td{
+
+    padding:14px 10px;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.performance-table td:first-child{
+
+    font-weight:600;
+
+    color:white;
+
+}
+
+.performance-table td:last-child{
+
+    text-align:right;
+
+    color:var(--blue);
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================================
+   MINI STATS
+   ========================================================== */
+
+.mini-stat-card{
+
+    background:var(--bg-card);
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:18px;
+
+    text-align:center;
+
+    transition:.2s;
+
+}
+
+.mini-stat-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:#334155;
+
+}
+
+.mini-stat-label{
+
+    display:block;
+
+    color:var(--text-muted);
+
+    font-size:.78rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+}
+
+.mini-stat-card strong{
+
+    display:block;
+
+    margin-top:10px;
+
+    font-size:1.45rem;
+
+    color:white;
+
+}
+
+
+/* ==========================================================
+   ANALYTICS GRID HELPERS
+   ========================================================== */
+
+.analytics-grid{
+
+    display:grid;
+
+    gap:24px;
+
+}
+
+.analytics-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.analytics-label{
+
+    color:var(--text-secondary);
+
+}
+
+.analytics-value{
+
+    color:white;
+
+    font-weight:700;
+
+}
+
+
+/* ==========================================================
+   EMPTY CHART STATE
+   ========================================================== */
+
+.chart-empty{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-height:260px;
+
+    color:var(--text-muted);
+
+    text-align:center;
+
+}
+
+.chart-empty i{
+
+    font-size:3rem;
+
+    margin-bottom:16px;
+
+    opacity:.4;
+
+}
+
+
+/* ==========================================================
+   CHART LEGEND
+   ========================================================== */
+
+.chart-legend{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:16px;
+
+    margin-top:18px;
+
+}
+
+.legend-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.legend-dot{
+
+    width:12px;
+
+    height:12px;
+
+    border-radius:50%;
+
+}
+
+.legend-text{
+
+    font-size:.85rem;
+
+    color:var(--text-secondary);
+
+}
+
+
+/* ==========================================================
+   PANEL SPACING
+   ========================================================== */
+
+.panel-card{
+
+    padding:24px;
+
+}
+/* ==========================================================
+   FILTER SIDEBAR
+   ========================================================== */
+
+.filter-panel{
+
+    padding:26px;
+
+    position:sticky;
+
+    top:95px;
+
+}
+
+.filter-label{
+
+    display:block;
+
+    margin-top:18px;
+
+    margin-bottom:8px;
+
+    font-size:.82rem;
+
+    font-weight:600;
+
+    color:var(--text-secondary);
+
+    text-transform:uppercase;
+
+    letter-spacing:.06em;
+
+}
+
+.filter-input,
+.filter-select{
+
+    width:100%;
+
+    padding:12px 14px;
+
+    background:var(--bg-secondary);
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    color:white;
+
+    transition:.18s;
+
+}
+
+.filter-input::placeholder{
+
+    color:var(--text-muted);
+
+}
+
+.filter-input:focus,
+.filter-select:focus{
+
+    outline:none;
+
+    border-color:var(--blue);
+
+    box-shadow:0 0 0 3px rgba(59,130,246,.18);
+
+}
+
+.filter-select{
+
+    cursor:pointer;
+
+}
+
+
+/* ==========================================================
+   DEAL GRID
+   ========================================================== */
+
+#dealGrid{
+
+    align-items:start;
+
+}
+
+
+/* ==========================================================
+   DEAL CARD
+   ========================================================== */
+
+.deal-card{
+
+    background:var(--bg-card);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:24px;
+
+    transition:all .22s ease;
+
+    position:relative;
+
+    overflow:hidden;
+
+}
+
+.deal-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:4px;
+
+    height:100%;
+
+    background:linear-gradient(
+        to bottom,
+        var(--blue),
+        var(--green)
+    );
+
+    transform:scaleY(0);
+
+    transform-origin:top;
+
+    transition:.25s;
+
+}
+
+.deal-card:hover{
+
+    transform:translateY(-6px);
+
+    border-color:#334155;
+
+    box-shadow:
+        0 18px 40px rgba(0,0,0,.35);
+
+}
+
+.deal-card:hover::before{
+
+    transform:scaleY(1);
+
+}
+
+
+/* ==========================================================
+   DEAL HEADER
+   ========================================================== */
+
+.deal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:20px;
+
+}
+
+.deal-title{
+
+    font-size:1.15rem;
+
+    font-weight:700;
+
+    color:white;
+
+    line-height:1.45;
+
+}
+
+.deal-company{
+
+    color:white;
+
+}
+
+.deal-arrow{
+
+    color:var(--blue);
+
+    margin:0 6px;
+
+}
+
+.deal-date{
+
+    margin-top:8px;
+
+    font-size:.82rem;
+
+    color:var(--text-muted);
+
+}
+
+
+/* ==========================================================
+   DEAL BADGES
+   ========================================================== */
+
+.deal-tags{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:18px;
+
+}
+
+.deal-badge{
+
+    padding:6px 12px;
+
+    border-radius:999px;
+
+    font-size:.74rem;
+
+    font-weight:600;
+
+}
+
+.badge-industry{
+
+    background:rgba(59,130,246,.15);
+
+    color:#bfdbfe;
+
+}
+
+.badge-region{
+
+    background:rgba(34,197,94,.15);
+
+    color:#bbf7d0;
+
+}
+
+.badge-source{
+
+    background:rgba(245,158,11,.14);
+
+    color:#fde68a;
+
+}
+
+.badge-value{
+
+    background:rgba(139,92,246,.15);
+
+    color:#ddd6fe;
+
+}
+
+
+/* ==========================================================
+   DEAL SUMMARY
+   ========================================================== */
+
+.deal-summary{
+
+    margin-top:18px;
+
+    color:var(--text-secondary);
+
+    line-height:1.7;
+
+    font-size:.93rem;
+
+}
+
+
+/* ==========================================================
+   DEAL METADATA
+   ========================================================== */
+
+.deal-meta{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,minmax(0,1fr));
+
+    gap:14px;
+
+    margin-top:20px;
+
+    padding-top:18px;
+
+    border-top:1px solid rgba(255,255,255,.06);
+
+}
+
+.meta-box{
+
+    background:#0b1220;
+
+    border:1px solid rgba(255,255,255,.04);
+
+    border-radius:12px;
+
+    padding:12px;
+
+}
+
+.meta-label{
+
+    display:block;
+
+    color:var(--text-muted);
+
+    font-size:.72rem;
+
+    text-transform:uppercase;
+
+    letter-spacing:.06em;
+
+}
+
+.meta-value{
+
+    display:block;
+
+    margin-top:6px;
+
+    color:white;
+
+    font-weight:600;
+
+}
+
+
+/* ==========================================================
+   DEAL ACTIONS
+   ========================================================== */
+
+.deal-actions{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin-top:22px;
+
+}
+
+.action-group{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.icon-button{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:12px;
+
+    border:1px solid var(--border);
+
+    background:var(--bg-secondary);
+
+    color:var(--text-secondary);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:.18s;
+
+}
+
+.icon-button:hover{
+
+    background:var(--blue);
+
+    color:white;
+
+    border-color:var(--blue);
+
+}
+
+.primary-button{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:11px 18px;
+
+    border-radius:12px;
+
+    background:var(--blue);
+
+    color:white;
+
+    font-weight:600;
+
+    transition:.18s;
+
+}
+
+.primary-button:hover{
+
+    background:#2563eb;
+
+}
+
+
+/* ==========================================================
+   LOAD MORE
+   ========================================================== */
+
+#loadMoreDeals{
+
+    transition:.2s;
+
+}
+
+#loadMoreDeals:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+/* ==========================================================
+   LOADER
+   ========================================================== */
+
+.loader{
+
+    width:54px;
+
+    height:54px;
+
+    border:4px solid rgba(255,255,255,.08);
+
+    border-top-color:var(--blue);
+
+    border-radius:50%;
+
+    animation:spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+
+/* ==========================================================
+   EMPTY STATE
+   ========================================================== */
+
+#emptyDeals{
+
+    text-align:center;
+
+}
+
+#emptyDeals i{
+
+    opacity:.25;
+
+}
+
+#emptyDeals h3{
+
+    margin-top:20px;
+
+    color:white;
+
+}
+
+#emptyDeals p{
+
+    margin-top:10px;
+
+}
+/* ==========================================================
+   DEAL MODAL
+   ========================================================== */
+
+#dealModal{
+
+    animation:fadeIn .2s ease;
+
+}
+
+#dealModal .bg-slate-900{
+
+    animation:modalSlide .25s ease;
+
+}
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+    }
+
+    to{
+
+        opacity:1;
+
+    }
+
+}
+
+@keyframes modalSlide{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(20px) scale(.98);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0) scale(1);
+
+    }
+
+}
+
+
+/* ==========================================================
+   TOAST
+   ========================================================== */
+
+#toast{
+
+    transition:.25s ease;
+
+    min-width:280px;
+
+}
+
+#toast.show{
+
+    display:block;
+
+    animation:toastUp .3s ease;
+
+}
+
+@keyframes toastUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translate(-50%,25px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translate(-50%,0);
+
+    }
+
+}
+
+
+/* ==========================================================
+   SCROLL TO TOP
+   ========================================================== */
+
+#scrollTop{
+
+    transition:.2s;
+
+}
+
+#scrollTop:hover{
+
+    transform:translateY(-4px);
+
+}
+
+
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+
+footer{
+
+    color:var(--text-secondary);
+
+}
+
+footer h2,
+footer h3{
+
+    color:white;
+
+}
+
+footer ul{
+
+    list-style:none;
+
+}
+
+footer li{
+
+    margin-bottom:10px;
+
+    transition:.18s;
+
+}
+
+footer li:hover{
+
+    color:white;
+
+    cursor:pointer;
+
+}
+
+
+/* ==========================================================
+   SKELETON LOADING
+   ========================================================== */
+
+.skeleton{
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:#1e293b;
+
+    border-radius:10px;
+
+}
+
+.skeleton::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    transform:translateX(-100%);
+
+    background:linear-gradient(
+
+        90deg,
+
+        transparent,
+
+        rgba(255,255,255,.08),
+
+        transparent
+
+    );
+
+    animation:skeletonLoading 1.2s infinite;
+
+}
+
+@keyframes skeletonLoading{
+
+    100%{
+
+        transform:translateX(100%);
+
+    }
+
+}
+
+
+/* ==========================================================
+   CUSTOM SCROLLBAR
+   ========================================================== */
+
+::-webkit-scrollbar{
+
+    width:10px;
+
+    height:10px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#0b1220;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#334155;
+
+    border-radius:999px;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#475569;
+
+}
+
+
+/* ==========================================================
+   GLOBAL ANIMATIONS
+   ========================================================== */
+
+.fade-in{
+
+    animation:fadeElement .35s ease;
+
+}
+
+@keyframes fadeElement{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(12px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.scale-hover{
+
+    transition:.18s;
+
+}
+
+.scale-hover:hover{
+
+    transform:scale(1.03);
+
+}
+
+
+/* ==========================================================
+   VISIBILITY HELPERS
+   ========================================================== */
+
+.hidden{
+
+    display:none !important;
+
+}
+
+.flex-center{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+.flex-between{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.text-muted{
+
+    color:var(--text-muted);
+
+}
+
+.text-success{
+
+    color:var(--green);
+
+}
+
+.text-danger{
+
+    color:var(--red);
+
+}
+
+.w-full{
+
+    width:100%;
+
+}
+
+
+/* ==========================================================
+   SPACING HELPERS
+   ========================================================== */
+
+.mt-2{margin-top:.5rem;}
+.mt-4{margin-top:1rem;}
+.mt-6{margin-top:1.5rem;}
+.mt-8{margin-top:2rem;}
+
+.mb-2{margin-bottom:.5rem;}
+.mb-4{margin-bottom:1rem;}
+.mb-6{margin-bottom:1.5rem;}
+.mb-8{margin-bottom:2rem;}
+
+.p-2{padding:.5rem;}
+.p-4{padding:1rem;}
+.p-6{padding:1.5rem;}
+.p-8{padding:2rem;}
+
+
+/* ==========================================================
+   ACCESSIBILITY
+   ========================================================== */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+a:focus-visible{
+
+    outline:2px solid var(--blue);
+
+    outline-offset:2px;
+
+}
+
+
+/* ==========================================================
+   RESPONSIVE
+   ========================================================== */
+
+@media (max-width:1200px){
+
+    .deal-meta{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media (max-width:992px){
+
+    .hero-card{
+
+        padding:32px;
+
+    }
+
+    .chart-header{
+
+        flex-direction:column;
+
+        gap:16px;
+
+    }
+
+    .deal-actions{
+
+        flex-direction:column;
+
+        align-items:stretch;
+
+    }
+
+    .action-group{
+
+        justify-content:center;
+
+    }
+
+}
+
+@media (max-width:768px){
+
+    section{
+
+        padding-left:20px !important;
+
+        padding-right:20px !important;
+
+    }
+
+    .kpi-card{
+
+        padding:18px;
+
+    }
+
+    .intel-card{
+
+        padding:18px;
+
+    }
+
+    .chart-card{
+
+        padding:18px;
+
+    }
+
+    .filter-panel{
+
+        position:relative;
+
+        top:auto;
+
+    }
+
+    .deal-card{
+
+        padding:18px;
+
+    }
+
+    .deal-header{
+
+        flex-direction:column;
+
+    }
+
+    .deal-meta{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .top-button{
+
+        width:100%;
+
+    }
+
+}
+
+@media (max-width:576px){
+
+    h1{
+
+        font-size:2rem;
+
+    }
+
+    h2{
+
+        font-size:1.6rem;
+
+    }
+
+    .kpi-number{
+
+        font-size:1.6rem;
+
+    }
+
+    .highlight-value{
+
+        font-size:1.35rem;
+
+    }
+
+    .primary-button{
+
+        width:100%;
+
+        justify-content:center;
+
+    }
+
+}
