@@ -1,0 +1,43 @@
+{
+  "acquisition": [
+    "acquires",
+    "acquire",
+    "acquisition of",
+    "to acquire",
+    "buy",
+    "buys",
+    "buying",
+    "purchase of",
+    "takes over"
+  ],
+  "merger": [
+    "merger",
+    "merges with",
+    "merge with"
+  ],
+  "investment": [
+    "invests in",
+    "investment in",
+    "backs",
+    "funds"
+  ],
+  "stake": [
+    "acquires stake in",
+    "takes stake in",
+    "majority stake",
+    "minority stake"
+  ],
+  "divestiture": [
+    "divests",
+    "sells business to",
+    "asset sale",
+    "spin off",
+    "spins off"
+  ],
+  "joint_venture": [
+    "joint venture",
+    "creates jv",
+    "forms joint venture with",
+    "partners with"
+  ]
+}
