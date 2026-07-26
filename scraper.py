@@ -78,10 +78,23 @@ def fetch_news():
 def save_to_supabase(deals):
     if not deals: return
     for deal in deals:
+        def save_to_supabase(deals):
+    if not deals:
+        print("No deals found.")
+        return
+
+    for deal in deals:
         try:
-             supabase.table("ma_deals").upsert(deal, on_conflict="url").execute()
-        except Exception:
-            pass 
+            response = (
+                supabase
+                .table("ma_deals")
+                .upsert(deal, on_conflict="url")
+                .execute()
+            )
+            print(f"Inserted: {deal['title']}")
+        except Exception as e:
+            print(f"ERROR inserting {deal['title']}")
+            print(e)
 
 if __name__ == "__main__":
     deals = fetch_news()
