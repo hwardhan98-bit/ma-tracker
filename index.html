@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M&A Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-50 min-h-screen p-8 font-sans">
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-3xl font-bold mb-8 text-gray-800">M&A Tracker</h1>
+        
+        <div class="bg-white p-4 rounded shadow mb-8 flex gap-4">
+            <input type="text" id="search" placeholder="Search company or headline..." class="border p-2 rounded w-full">
+            <select id="industry" class="border p-2 rounded w-48">
+                <option value="">All Industries</option>
+                <option value="Technology">Technology</option>
+                <option value="Energy">Energy</option>
+            </select>
+            <button onclick="fetchDeals()" class="bg-blue-600 text-white px-6 rounded hover:bg-blue-700">Filter</button>
+        </div>
+
+        <div id="results" class="space-y-4"></div>
+    </div>
+
+    <script>
+        // REPLACE THESE TWO LINES WITH YOUR ACTUAL KEYS
+        const supabaseUrl = 'https://exhclsdguetsineupcls.supabase.co/rest/v1/';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4aGNsc2RndWV0c2luZXVwY2xzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNjAyOTEsImV4cCI6MjEwMDYzNjI5MX0.whjnxrarPEzGt2yi6AGnXQpKGYWmb56xZT3YCm7DkJQ';
+        
+        const client = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function fetchDeals() {
+            const searchVal = document.getElementById('search').value;
+            const industryVal = document.getElementById('industry').value;
+            const resultsDiv = document.getElementById('results');
+
+            resultsDiv.innerHTML = '<p class="text-gray-500">Searching database...</p>';
+
+            let query = client.from('ma_deals').select('*').order('published_at', { ascending: false });
+
+            if (industryVal) query = query.eq('industry', industryVal);
+            if (searchVal) query = query.ilike('title', `%${searchVal}%`);
+
+            const { data, error } = await query.limit(50);
+
+            if (error || data.length === 0) {
+                resultsDiv.innerHTML = `<p class="text-gray-500">No deals found.</p>`;
+                return;
+            }
+
+            resultsDiv.innerHTML = data.map(deal => `
+                <div class="bg-white p-4 rounded shadow">
+                    <div class="flex justify-between items-start mb-2">
+                        <a href="${deal.url}" target="_blank" class="text-lg font-semibold text-blue-600 hover:underline">
+                            ${deal.title}
+                        </a>
+                        <span class="bg-gray-100 text-xs px-2 py-1 rounded border">${deal.industry}</span>
+                    </div>
+                    <div class="text-sm text-gray-500 flex gap-4 mt-4">
+                        <span><strong>Entity:</strong> ${deal.company}</span>
+                        <span><strong>Source:</strong> ${deal.source}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        fetchDeals();
+    </script>
+</body>
+</html>
