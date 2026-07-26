@@ -3,69 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M&A Tracker</title>
+    <title>Pro M&A Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .star-btn { cursor: pointer; color: #cbd5e1; font-size: 1.5rem; transition: color 0.2s; }
+        .star-btn.active { color: #fbbf24; }
+    </style>
 </head>
-<body class="bg-gray-50 min-h-screen p-8 font-sans">
-    <div class="max-w-5xl mx-auto">
-        <h1 class="text-3xl font-bold mb-8 text-gray-800">M&A Tracker</h1>
+<body class="bg-gray-100 min-h-screen p-8 font-sans">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Global M&A Terminal</h1>
+            <button onclick="exportToCSV()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">⬇ Export to CSV</button>
+        </div>
         
-        <div class="bg-white p-4 rounded shadow mb-8 flex gap-4">
-            <input type="text" id="search" placeholder="Search company or headline..." class="border p-2 rounded w-full">
-            <select id="industry" class="border p-2 rounded w-48">
-                <option value="">All Industries</option>
+        <!-- Advanced Filters -->
+        <div class="bg-white p-6 rounded-lg shadow-md mb-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <input type="text" id="search" placeholder="Search keywords..." class="border p-2 rounded w-full">
+            
+            <select id="industry" class="border p-2 rounded w-full">
+                <option value="">All 13 Sectors</option>
                 <option value="Technology">Technology</option>
+                <option value="Healthcare">Healthcare</option>
                 <option value="Energy">Energy</option>
+                <option value="Finance">Finance</option>
+                <option value="Real Estate">Real Estate</option>
+                <option value="Consumer Goods">Consumer Goods</option>
+                <option value="Retail">Retail</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Telecommunications">Telecommunications</option>
+                <option value="Media">Media</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Agriculture">Agriculture</option>
+                <option value="Utilities">Utilities</option>
             </select>
-            <button onclick="fetchDeals()" class="bg-blue-600 text-white px-6 rounded hover:bg-blue-700">Filter</button>
+
+            <select id="deal_type" class="border p-2 rounded w-full">
+                <option value="">All Deal Types</option>
+                <option value="Acquisition">Acquisition</option>
+                <option value="Merger">Merger</option>
+                <option value="Take-Private">Take-Private</option>
+                <option value="Carve-out">Carve-out</option>
+                <option value="Joint Venture">Joint Venture</option>
+            </select>
+
+            <select id="region" class="border p-2 rounded w-full">
+                <option value="">All Regions</option>
+                <option value="North America">North America</option>
+                <option value="Europe">Europe</option>
+                <option value="Asia-Pacific">Asia-Pacific</option>
+            </select>
+
+            <input type="number" id="min_value" placeholder="Min Value ($M)" class="border p-2 rounded w-full">
+            
+            <div class="flex space-x-2">
+                <input type="date" id="start_date" class="border p-2 rounded w-full text-sm">
+                <input type="date" id="end_date" class="border p-2 rounded w-full text-sm">
+            </div>
+
+            <select id="sort_by" class="border p-2 rounded w-full bg-gray-50">
+                <option value="date_desc">Sort: Newest First</option>
+                <option value="date_asc">Sort: Oldest First</option>
+                <option value="size_desc">Sort: Largest Deal Size</option>
+            </select>
+
+            <button onclick="fetchDeals()" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 w-full font-bold">Apply Filters</button>
         </div>
 
+        <!-- Results Container -->
         <div id="results" class="space-y-4"></div>
     </div>
 
     <script>
-        // REPLACE THESE TWO LINES WITH YOUR ACTUAL KEYS
+        // REPLACE WITH YOUR KEYS
         const supabaseUrl = 'https://exhclsdguetsineupcls.supabase.co/rest/v1/';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4aGNsc2RndWV0c2luZXVwY2xzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNjAyOTEsImV4cCI6MjEwMDYzNjI5MX0.whjnxrarPEzGt2yi6AGnXQpKGYWmb56xZT3YCm7DkJQ';
-        
         const client = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+        let currentData = [];
+        let starredDeals = new Set(); // Stores starred items for the session
+
         async function fetchDeals() {
-            const searchVal = document.getElementById('search').value;
-            const industryVal = document.getElementById('industry').value;
             const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<p class="text-gray-500">Querying terminal...</p>';
 
-            resultsDiv.innerHTML = '<p class="text-gray-500">Searching database...</p>';
+            // Build query
+            let query = client.from('ma_deals').select('*');
 
-            let query = client.from('ma_deals').select('*').order('published_at', { ascending: false });
+            // Apply Filters
+            if (document.getElementById('industry').value) query = query.eq('industry', document.getElementById('industry').value);
+            if (document.getElementById('deal_type').value) query = query.eq('deal_type', document.getElementById('deal_type').value);
+            if (document.getElementById('region').value) query = query.eq('region', document.getElementById('region').value);
+            if (document.getElementById('search').value) query = query.ilike('title', `%${document.getElementById('search').value}%`);
+            if (document.getElementById('min_value').value) query = query.gte('deal_value', document.getElementById('min_value').value);
+            if (document.getElementById('start_date').value) query = query.gte('published_at', document.getElementById('start_date').value);
+            if (document.getElementById('end_date').value) query = query.lte('published_at', document.getElementById('end_date').value);
 
-            if (industryVal) query = query.eq('industry', industryVal);
-            if (searchVal) query = query.ilike('title', `%${searchVal}%`);
+            // Apply Sorting
+            const sortSelection = document.getElementById('sort_by').value;
+            if (sortSelection === 'date_desc') query = query.order('published_at', { ascending: false });
+            if (sortSelection === 'date_asc') query = query.order('published_at', { ascending: true });
+            if (sortSelection === 'size_desc') query = query.order('deal_value', { ascending: false, nullsFirst: false });
 
-            const { data, error } = await query.limit(50);
-
+            const { data, error } = await query.limit(100);
+            
             if (error || data.length === 0) {
-                resultsDiv.innerHTML = `<p class="text-gray-500">No deals found.</p>`;
+                resultsDiv.innerHTML = `<p class="text-gray-500">No deals matched your criteria.</p>`;
                 return;
             }
 
-            resultsDiv.innerHTML = data.map(deal => `
-                <div class="bg-white p-4 rounded shadow">
-                    <div class="flex justify-between items-start mb-2">
-                        <a href="${deal.url}" target="_blank" class="text-lg font-semibold text-blue-600 hover:underline">
+            currentData = data;
+            renderDeals();
+        }
+
+        function toggleStar(id) {
+            if (starredDeals.has(id)) starredDeals.delete(id);
+            else starredDeals.add(id);
+            renderDeals();
+        }
+
+        function renderDeals() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = currentData.map(deal => `
+                <div class="bg-white p-5 rounded-lg shadow border-l-4 border-blue-500 flex items-center justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-bold">${deal.deal_type}</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded border">${deal.industry}</span>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">${deal.deal_value ? '$' + deal.deal_value + 'M' : 'Undisclosed'}</span>
+                            <span class="text-gray-400 text-xs">📍 ${deal.region}</span>
+                        </div>
+                        <a href="${deal.url}" target="_blank" class="text-xl font-semibold text-gray-800 hover:text-blue-600 hover:underline">
                             ${deal.title}
                         </a>
-                        <span class="bg-gray-100 text-xs px-2 py-1 rounded border">${deal.industry}</span>
+                        <div class="text-sm text-gray-500 mt-2">
+                            <span>Source: ${deal.source}</span> • 
+                            <span>Date: ${new Date(deal.published_at).toLocaleDateString()}</span>
+                        </div>
                     </div>
-                    <div class="text-sm text-gray-500 flex gap-4 mt-4">
-                        <span><strong>Entity:</strong> ${deal.company}</span>
-                        <span><strong>Source:</strong> ${deal.source}</span>
+                    <div class="ml-4">
+                        <button onclick="toggleStar(${deal.id})" class="star-btn ${starredDeals.has(deal.id) ? 'active' : ''}">★</button>
                     </div>
                 </div>
             `).join('');
         }
 
+        function exportToCSV() {
+            if(currentData.length === 0) { alert("No data to export!"); return; }
+            
+            const headers = ['Title', 'Industry', 'Deal Type', 'Region', 'Value ($M)', 'Date', 'Source', 'URL'];
+            const rows = currentData.map(d => [
+                `"${d.title.replace(/"/g, '""')}"`, 
+                d.industry, 
+                d.deal_type, 
+                d.region, 
+                d.deal_value || 'Undisclosed', 
+                new Date(d.published_at).toLocaleDateString(), 
+                `"${d.source}"`, 
+                d.url
+            ]);
+            
+            const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(e => e.join(','))].join("\n");
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "ma_deals_export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Run on load
         fetchDeals();
     </script>
 </body>
