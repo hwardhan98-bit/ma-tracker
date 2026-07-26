@@ -1,6 +1,7 @@
 import feedparser
 import os
 import re
+import urllib.parse
 from dateutil import parser as date_parser
 from supabase import create_client, Client
 
@@ -25,13 +26,13 @@ def extract_deal_info(title):
     elif "carve-out" in title_lower or "spinoff" in title_lower: deal_type = "Carve-out"
     elif "joint venture" in title_lower or " jv " in title_lower: deal_type = "Joint Venture"
 
-    # 2. Guess Region (Basic keyword matching)
+    # 2. Guess Region
     region = "Global/Unknown"
     if any(w in title_lower for w in [" us ", " u.s.", "american"]): region = "North America"
     elif any(w in title_lower for w in ["uk ", "europe", "eu "]): region = "Europe"
     elif any(w in title_lower for w in ["china", "japan", "india", "asia"]): region = "Asia-Pacific"
 
-    # 3. Extract Deal Value (Regex looking for $X Billion or $X Million)
+    # 3. Extract Deal Value
     deal_value = None
     value_match = re.search(r'\$\s*([0-9,.]+)\s*(billion|million|b|m)', title_lower, re.IGNORECASE)
     if value_match:
@@ -47,8 +48,11 @@ def extract_deal_info(title):
 def fetch_news():
     deals = []
     for industry in INDUSTRIES:
-        # Search global news for the industry + M&A keywords
-        url = f'https://news.google.com/rss/search?q="{industry}"+AND+(merger+OR+acquisition+OR+"joint+venture")+when:1d&hl=en-US&gl=US&ceid=US:en'
+        # Safely format and encode the URL to fix space/character errors
+        raw_query = f'"{industry}" AND (merger OR acquisition OR "joint venture") when:1d'
+        encoded_query = urllib.parse.quote(raw_query)
+        url = f'https://news.google.com/rss/search?q={encoded_query}&hl=en-US&gl=US&ceid=US:en'
+        
         feed = feedparser.parse(url)
         
         for entry in feed.entries:
@@ -61,7 +65,7 @@ def fetch_news():
             deals.append({
                 "title": clean_title,
                 "url": entry.link,
-                "company": "Various", # Headline level, specific company extraction requires AI
+                "company": "Various",
                 "industry": industry,
                 "source": source,
                 "published_at": date_parser.parse(entry.published).isoformat(),
